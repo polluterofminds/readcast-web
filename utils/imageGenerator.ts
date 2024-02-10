@@ -67,7 +67,7 @@ export const generateBookImageOG = async (book: Book) => {
   const backgroundTemp = "/tmp/background.png"
   const endFile = "/tmp/final.png";
   await downloadImage("https://readcast.mypinata.cloud/ipfs/QmbD72te2tUWKrfXL311Tt8CMCnc9AuSd6osX4nLB7VWZY", backgroundTemp)
-  const { data, info }: any = await sharp('./background.png')
+  const { data, info }: any = await sharp(backgroundTemp)
   .resize({
     fit: sharp.fit.contain,
     height: 400, 
