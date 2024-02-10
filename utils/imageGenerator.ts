@@ -68,9 +68,9 @@ export const generateBookImageOG = async (book: Book) => {
   // console.log({svg});
   // const png = new Resvg(svg).render().asPng();
   // console.log({png})
-  const tempPath = "./tmp/image.png";
-  const backgroundTemp = "./tmp/background.png"
-  const endFile = "./tmp/final.png";
+  const tempPath = "/tmp/image.png";
+  const backgroundTemp = "/tmp/background.png"
+  const endFile = "/tmp/final.png";
   await downloadImage(book.thumbnail, tempPath)
   await downloadImage("https://readcast.mypinata.cloud/ipfs/QmbD72te2tUWKrfXL311Tt8CMCnc9AuSd6osX4nLB7VWZY", backgroundTemp)
   const { data, info }: any = await sharp(tempPath)
@@ -93,7 +93,6 @@ export const generateBookImageOG = async (book: Book) => {
       });
   
   const url = await uploadImageFromFile(tempPath);
-  await downloadImage(url, "./tmp/check.png")
   console.log({ url });
   return url;
 }
