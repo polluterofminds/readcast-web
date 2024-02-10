@@ -1,6 +1,5 @@
 import fs from "fs";
 import axios from 'axios'
-const download = require('image-downloader');
 const pinataSDK = require('@pinata/sdk');
 const pinata = new pinataSDK({ pinataJWTKey: process.env.PINATA_KEY || "" });
 
@@ -21,7 +20,6 @@ async function downloadImage(url: string, filepath: string) {
 }
 
 export const uploadImageFromUrl = async (imgUrl: string) => {
-  console.log(imgUrl);
   try {
     const filepath = rootpath + Date.now().toString() + ".jpg";
     console.log(filepath);

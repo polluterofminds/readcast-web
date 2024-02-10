@@ -6,9 +6,10 @@ import { getSSLHubRpcClient, Message } from "@farcaster/hub-nodejs";
 
 const client = getSSLHubRpcClient("hub-grpc.pinata.cloud");
 
-export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const slug = params.slug;
+    const slug = params.id;
+    console.log(slug)
     //  Now let's get the book data from the id
     const review: Review = await getReviewsById(slug);
     if (!review) {
@@ -83,9 +84,9 @@ export async function GET(request: NextRequest, { params }: { params: { slug: st
   }
 }
 
-export async function POST(request: NextRequest, { params }: { params: { slug: string } }) {
+export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const slug = params.slug;
+    const slug = params.id;
     //  First let's verify the data
     const body = await request.json();
     const { trustedData, untrustedData } = body;

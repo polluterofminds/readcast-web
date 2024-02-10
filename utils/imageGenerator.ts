@@ -4,6 +4,21 @@ import { Resvg } from "@resvg/resvg-js";
 import { Book } from "../types";
 import fs from "fs";
 import { uploadImageFromFile } from "./ipfs";
+import axios from 'axios';
+const sharp = require('sharp')
+
+async function downloadImage(url: string, filepath: string) {
+  const response = await axios({
+      url,
+      method: 'GET',
+      responseType: 'stream'
+  });
+  return new Promise((resolve, reject) => {
+      response.data.pipe(fs.createWriteStream(filepath))
+          .on('error', reject)
+          .once('close', () => resolve(filepath)); 
+  });
+}
 
 export const generateBookImageOG = async (book: Book) => {
   const monoFontReg = await fetch(
@@ -17,7 +32,7 @@ export const generateBookImageOG = async (book: Book) => {
   const ogOptions: SatoriOptions = {
     width: 1200,
     height: 630,
-    // debug: true,
+    debug: true,
     embedFont: true,
     fonts: [
       {
@@ -35,21 +50,40 @@ export const generateBookImageOG = async (book: Book) => {
     ],
   };
 
-  const markup = (): any => html`
-  <div style="background: #181A1A; padding: 20px; display: flex; justify-content: center; align-items: center; height: 100vh;">
-    <div style="width: 250px; margin: auto;">
-      <img style="width: 100%; margin: auto; height: auto;" src="${book.thumbnail}" />
-      <h3 style="color: #fff; text-align: center;">${book.title}</h3>
-    </div>
-  </div>
-  `;
+  // const markup = (): any => html`
+  // <div style="background: #181A1A; padding: 20px; display: flex; justify-content: center; align-items: center; height: 100vh;">
+  //   <div style="width: 250px; margin: auto;">
+  //     <img style="width: 100%; margin: auto; height: auto;" src="${book.thumbnail}" />
+  //     <h3 style="color: #fff; text-align: center;">${book.title}</h3>
+  //   </div>
+  // </div>
+  // `;
 
-  const svg = await satori(markup(), ogOptions);
-  console.log({svg});
-  const png = new Resvg(svg).render().asPng();
-  console.log({png})
+  // const svg = await satori(markup(), ogOptions);
+  // console.log({svg});
+  // const png = new Resvg(svg).render().asPng();
+  // console.log({png})
   const tempPath = "/tmp/image.png";
-  fs.writeFileSync(tempPath, png);
+  await downloadImage(book.thumbnail, tempPath)
+  const { data, info }: any = await sharp('./background.png')
+  .resize({
+    fit: sharp.fit.contain,
+    height: 400, 
+    width: 600
+  })
+  .toBuffer({ resolveWithObject: true }) 
+  
+  await sharp(tempPath) 
+      .resize({
+        width: 200
+      }) 
+      .composite([{ 
+        input: data
+      }])
+      .toFile(tempPath, function(err: any) {
+        console.log("Error: ", err)
+      });
+  
   const url = await uploadImageFromFile(tempPath);
   console.log({ url });
   return url;
