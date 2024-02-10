@@ -89,6 +89,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     const slug = params.id;
     //  First let's verify the data
     const body = await request.json();
+    console.log(body);
     const { trustedData, untrustedData } = body;
     const frameMessage = Message.decode(Buffer.from(trustedData?.messageBytes || '', 'hex'));
     const result = await client.validateMessage(frameMessage);
