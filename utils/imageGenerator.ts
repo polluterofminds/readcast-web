@@ -64,7 +64,8 @@ export const generateBookImageOG = async (book: Book) => {
   // const png = new Resvg(svg).render().asPng();
   // console.log({png})
   const tempPath = "/tmp/image.png";
-  await downloadImage(book.thumbnail, tempPath)
+  const backgroundTemp = "/tmp/background.png"
+  await downloadImage("https://readcast.mypinata.cloud/ipfs/QmbD72te2tUWKrfXL311Tt8CMCnc9AuSd6osX4nLB7VWZY", backgroundTemp)
   const { data, info }: any = await sharp('./background.png')
   .resize({
     fit: sharp.fit.contain,
@@ -72,6 +73,8 @@ export const generateBookImageOG = async (book: Book) => {
     width: 600
   })
   .toBuffer({ resolveWithObject: true }) 
+
+  await downloadImage(book.thumbnail, tempPath)
   
   await sharp(tempPath) 
       .resize({
