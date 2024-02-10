@@ -8,7 +8,8 @@ import axios from 'axios';
 const sharp = require('sharp')
 
 async function downloadImage(url: string, filepath: string) {
-  const response = await axios({
+  try {
+    const response = await axios({
       url,
       method: 'GET',
       responseType: 'stream'
@@ -18,6 +19,10 @@ async function downloadImage(url: string, filepath: string) {
           .on('error', reject)
           .once('close', () => resolve(filepath)); 
   });
+  } catch (error) {
+    console.log(error);
+  }
+  
 }
 
 export const generateBookImageOG = async (book: Book) => {
@@ -63,23 +68,22 @@ export const generateBookImageOG = async (book: Book) => {
   // console.log({svg});
   // const png = new Resvg(svg).render().asPng();
   // console.log({png})
-  const tempPath = "/tmp/image.png";
-  const backgroundTemp = "/tmp/background.png"
-  const endFile = "/tmp/final.png";
+  const tempPath = "./tmp/image.png";
+  const backgroundTemp = "./tmp/background.png"
+  const endFile = "./tmp/final.png";
+  await downloadImage(book.thumbnail, tempPath)
   await downloadImage("https://readcast.mypinata.cloud/ipfs/QmbD72te2tUWKrfXL311Tt8CMCnc9AuSd6osX4nLB7VWZY", backgroundTemp)
-  const { data, info }: any = await sharp(backgroundTemp)
+  const { data, info }: any = await sharp(tempPath)
   .resize({
     fit: sharp.fit.contain,
-    height: 400, 
-    width: 600
+    width: 200
   })
   .toBuffer({ resolveWithObject: true }) 
-
-  await downloadImage(book.thumbnail, tempPath)
   
-  await sharp(tempPath) 
+  await sharp(backgroundTemp) 
       .resize({
-        width: 600
+        width: 600, 
+        fit: sharp.fit.contain,
       }) 
       .composite([{ 
         input: data
@@ -89,6 +93,7 @@ export const generateBookImageOG = async (book: Book) => {
       });
   
   const url = await uploadImageFromFile(tempPath);
+  await downloadImage(url, "./tmp/check.png")
   console.log({ url });
   return url;
 }
