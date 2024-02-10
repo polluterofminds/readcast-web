@@ -65,6 +65,7 @@ export const generateBookImageOG = async (book: Book) => {
   // console.log({png})
   const tempPath = "/tmp/image.png";
   const backgroundTemp = "/tmp/background.png"
+  const endFile = "/tmp/final.png";
   await downloadImage("https://readcast.mypinata.cloud/ipfs/QmbD72te2tUWKrfXL311Tt8CMCnc9AuSd6osX4nLB7VWZY", backgroundTemp)
   const { data, info }: any = await sharp('./background.png')
   .resize({
@@ -78,12 +79,12 @@ export const generateBookImageOG = async (book: Book) => {
   
   await sharp(tempPath) 
       .resize({
-        width: 200
+        width: 600
       }) 
       .composite([{ 
         input: data
       }])
-      .toFile(tempPath, function(err: any) {
+      .toFile(endFile, function(err: any) {
         console.log("Error: ", err)
       });
   
