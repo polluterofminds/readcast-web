@@ -35,7 +35,7 @@ export const generateBookImageOG = async (book: Book) => {
       await downloadImage(book.thumbnail, tempPath)
       await downloadImage("https://readcast.mypinata.cloud/ipfs/QmbD72te2tUWKrfXL311Tt8CMCnc9AuSd6osX4nLB7VWZY", backgroundTemp)
 
-      console.log(await fs.readdirSync("./tmp/"))
+      console.log(await fs.readdirSync("/tmp/"))
 
       const { data, info }: any = await sharp(tempPath)
         .resize({
