@@ -181,8 +181,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <meta property="fc:frame:image" content="https://readcast.mypinata.cloud/ipfs/QmSx5HNEgXTBXyQeNNELf9dnBVEvFD6i5naF3vTZXFe2Ex" />
-        <meta property="fc:frame:image:aspect_ratio" content="1:1" />
+        <meta property="fc:frame:image" content="https://readcast.mypinata.cloud/ipfs/QmSx5HNEgXTBXyQeNNELf9dnBVEvFD6i5naF3vTZXFe2Ex" />        
         <meta property="fc:frame:button:1" content="${addToLibraryText}" />
         <meta property="fc:frame:button:2" content="${upvoteReviewText}" />
         <meta property="og:image" content="https://readcast.mypinata.cloud/ipfs/QmSx5HNEgXTBXyQeNNELf9dnBVEvFD6i5naF3vTZXFe2Ex" />
