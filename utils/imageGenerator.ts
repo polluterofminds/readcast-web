@@ -44,7 +44,7 @@ export const generateBookImageOG = async (book: Book) => {
         console.log("Error: ", err)
       });
   
-  const url = await uploadImageFromFile(tempPath);
+  const url = await uploadImageFromFile(endFile);
   console.log({ url });
   return url;
 }
