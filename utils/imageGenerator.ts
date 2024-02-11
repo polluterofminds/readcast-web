@@ -26,36 +26,39 @@ async function downloadImage(url: string, filepath: string) {
 }
 
 export const generateBookImageOG = async (book: Book) => {
-  try {
-    const tempPath = "/tmp/image.jpg";
-    const backgroundTemp = "/tmp/background.jpg"
-    const endFile = "/tmp/final.jpg";
-    await downloadImage(book.thumbnail, tempPath)
-    await downloadImage("https://readcast.mypinata.cloud/ipfs/QmbD72te2tUWKrfXL311Tt8CMCnc9AuSd6osX4nLB7VWZY", backgroundTemp)
 
-    console.log(await fs.readdirSync("./tmp/"))
+  return new Promise(async (resolve: any, reject: any) => {
+    try {
+      const tempPath = "/tmp/image.jpg";
+      const backgroundTemp = "/tmp/background.jpg"
+      const endFile = "/tmp/final.jpg";
+      await downloadImage(book.thumbnail, tempPath)
+      await downloadImage("https://readcast.mypinata.cloud/ipfs/QmbD72te2tUWKrfXL311Tt8CMCnc9AuSd6osX4nLB7VWZY", backgroundTemp)
 
-    const { data, info }: any = await sharp(tempPath)
-      .resize({
-        width: 150
-      })
-      .toBuffer({ resolveWithObject: true })
+      console.log(await fs.readdirSync("./tmp/"))
 
-    sharp(backgroundTemp)
-      .composite([{
-        input: data
-      }])
-      .toFile(endFile, async function (err: any) {
-        console.log("Error: ", err)
-        const metadata = await sharp(endFile).metadata();
-        console.log({ metadata });
-        const url = await uploadImageFromFile(endFile);
-        console.log({ url });
-        return url;
-      })
-  } catch (error) {
-    console.log("Image generation error")
-    console.log(error)
-    throw error;
-  }
+      const { data, info }: any = await sharp(tempPath)
+        .resize({
+          width: 150
+        })
+        .toBuffer({ resolveWithObject: true })
+
+      sharp(backgroundTemp)
+        .composite([{
+          input: data
+        }])
+        .toFile(endFile, async function (err: any) {
+          console.log("Error: ", err)
+          const metadata = await sharp(endFile).metadata();
+          console.log({ metadata });
+          const url = await uploadImageFromFile(endFile);
+          console.log({ url });
+          resolve(url);
+        })
+    } catch (error) {
+      console.log("Image generation error")
+      console.log(error)
+      reject(error);
+    }
+  })
 }
