@@ -22,39 +22,9 @@ async function downloadImage(url: string, filepath: string) {
   } catch (error) {
     console.log(error);
   }
-  
 }
 
 export const generateBookImageOG = async (book: Book) => {
-  const monoFontReg = await fetch(
-    "https://api.fontsource.org/v1/fonts/inter/latin-400-normal.ttf",
-  );
-
-  const monoFontBold = await fetch(
-    "https://api.fontsource.org/v1/fonts/inter/latin-700-normal.ttf",
-  );
-
-  const ogOptions: SatoriOptions = {
-    width: 1200,
-    height: 630,
-    debug: true,
-    embedFont: true,
-    fonts: [
-      {
-        name: "Roboto Mono",
-        data: await monoFontReg.arrayBuffer(),
-        weight: 400,
-        style: "normal",
-      },
-      {
-        name: "Roboto Mono",
-        data: await monoFontBold.arrayBuffer(),
-        weight: 700,
-        style: "normal",
-      },
-    ],
-  };
-
   const tempPath = "/tmp/image.png";
   const backgroundTemp = "/tmp/background.png"
   const endFile = "/tmp/final.png";
