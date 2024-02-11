@@ -54,6 +54,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <meta property="fc:frame:image" content="${imgUrl}" />
+   <meta property="fc:frame:image:aspect_ratio" content="1:1" />
    <meta property="fc:frame:button:1" content="Add to ReadCast library" />
    <meta property="fc:frame:button:2" content="Upvote review" />
    <meta property="og:title" content="${review.books.title}" />
@@ -181,6 +182,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta property="fc:frame:image" content="${imgUrl}" />
+        <meta property="fc:frame:image:aspect_ratio" content="1:1" />
         <meta property="fc:frame:button:1" content="${addToLibraryText}" />
         <meta property="fc:frame:button:2" content="${upvoteReviewText}" />
         <meta property="og:image" content="${imgUrl}" />

@@ -55,19 +55,6 @@ export const generateBookImageOG = async (book: Book) => {
     ],
   };
 
-  // const markup = (): any => html`
-  // <div style="background: #181A1A; padding: 20px; display: flex; justify-content: center; align-items: center; height: 100vh;">
-  //   <div style="width: 250px; margin: auto;">
-  //     <img style="width: 100%; margin: auto; height: auto;" src="${book.thumbnail}" />
-  //     <h3 style="color: #fff; text-align: center;">${book.title}</h3>
-  //   </div>
-  // </div>
-  // `;
-
-  // const svg = await satori(markup(), ogOptions);
-  // console.log({svg});
-  // const png = new Resvg(svg).render().asPng();
-  // console.log({png})
   const tempPath = "/tmp/image.png";
   const backgroundTemp = "/tmp/background.png"
   const endFile = "/tmp/final.png";
@@ -75,16 +62,11 @@ export const generateBookImageOG = async (book: Book) => {
   await downloadImage("https://readcast.mypinata.cloud/ipfs/QmbD72te2tUWKrfXL311Tt8CMCnc9AuSd6osX4nLB7VWZY", backgroundTemp)
   const { data, info }: any = await sharp(tempPath)
   .resize({
-    fit: sharp.fit.contain,
-    width: 200
+    width: 150
   })
   .toBuffer({ resolveWithObject: true }) 
   
-  await sharp(backgroundTemp) 
-      .resize({
-        width: 600, 
-        fit: sharp.fit.contain,
-      }) 
+  await sharp(backgroundTemp)       
       .composite([{ 
         input: data
       }])
